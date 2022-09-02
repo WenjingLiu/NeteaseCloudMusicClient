@@ -40,8 +40,13 @@ const sideList = ref([
   },
 ]);
 const isScrollBar = ref(false);
+const activeId = ref(11)
 function foldClick(item) {
     if(item.isFold) item.isItemShow = !item.isItemShow
+}
+
+function menuClick(str) {
+  activeId.value = str.id
 }
 </script>
 <template>
@@ -74,6 +79,8 @@ function foldClick(item) {
               fontSize: item.id == 2 || item.id == 3 ? '14px' : '',
               color: item.id == 2 || item.id == 3 ? '#444' : '',
             }"
+            :class="{'active': activeId == str.id}"
+            @click="menuClick(str)"
             >{{ str.name }}</router-link
           >
         </div>
@@ -108,7 +115,7 @@ function foldClick(item) {
           background: #f3f3f3;
           border-radius: 3px;
         }
-        &.router-link-exact-active{
+        &.active {
           font-size: 16px;
           color:#000;
           font-weight: bold;
