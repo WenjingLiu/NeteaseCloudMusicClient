@@ -1,5 +1,5 @@
 <template>
-  <div class="boutique-song-sheet">
+  <div class="boutique-song-sheet" @click="boutiqueSongSheetClick">
     <div
       :style="{
         width: '100%',
@@ -9,9 +9,10 @@
         filter: 'blur(40px)',
         backgroundSize: 'cover',
       }"
+      
     ></div>
     <div class="boutique-song-sheet__content">
-      <img :src="boutiqueSongSheet.coverImgUrl" alt="" />
+      <img v-show="boutiqueSongSheet.coverImgUrl" :src="boutiqueSongSheet.coverImgUrl" alt="" />
       <div class="boutique-song-sheet__des">
         <p class="boutique-song-sheet__name">精品歌单</p>
         <p class="boutique-song-sheet__description">{{ boutiqueSongSheet.name }}</p>
@@ -19,35 +20,7 @@
     </div>
   </div>
   <div class="song-sheet">
-    <div class="song-sheet-category">
-      <p
-        class="song-sheet-category__select"
-        @click="allCategoryShow = !allCategoryShow"
-      >
-        {{ activeCategory }} >
-      </p>
-      <div class="song-sheet-category__list" v-if="allCategoryShow">
-        <song-sheet-tag-category v-model:activeCategory="activeCategory">
-          <song-sheet-tag-group
-            v-for="group in categoryList"
-            :key="group.name"
-            :group="group"
-          >
-            <div class="song-sheet-tag__list">
-              <song-sheet-tag
-                v-for="item in group.sub"
-                :key="item.name"
-                :tag="item"
-                :class="
-                  activeCategory == item.name ? 'song-sheet-tag--active' : ''
-                "
-                @click="categorieClick(item.name)"
-              ></song-sheet-tag>
-            </div>
-          </song-sheet-tag-group>
-        </song-sheet-tag-category>
-      </div>
-    </div>
+    <song-sheet-tag-main v-model:songsheettag="activeCategory" :list="categoryList"></song-sheet-tag-main>
 
     <div class="song-sheet-category__hot-navbar">
       <div
@@ -67,18 +40,17 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { useRouter } from 'vue-router'
 import {
   getSongSheetCategoryApi,
   getSongSheetHotCategoryApi,
   getSongSheetBoutiqueApi,
 } from "@/api/index";
-import SongSheetTagCategory from "@/components/SongSheetTagCategory.vue";
-import SongSheetTagGroup from "@/components/SongSheetTagGroup.vue";
-import SongSheetTag from "@/components/SongSheetTag.vue";
+import SongSheetTagMain from "./components/songSheet/SongSheetTagMain.vue";
+const router = useRouter()
 const hotSongSheetNavbar = ref([]);
 const activeCategory = ref("全部歌单");
 const categoryList = ref([]);
-const allCategoryShow = ref(false);
 const boutiqueSongSheet = ref({});
 
 getSongSheetCategoryApi().then((res) => {
@@ -102,7 +74,6 @@ getSongSheetBoutiqueApi({
   console.log(res);
   boutiqueSongSheet.value = res.data.playlists[0];
 });
-
 getSongSheetHotCategoryApi().then((res) => {
   console.log(res);
   hotSongSheetNavbar.value = res.data.tags;
@@ -110,6 +81,10 @@ getSongSheetHotCategoryApi().then((res) => {
 const categorieClick = (name) => {
   activeCategory.value = name;
 };
+
+function boutiqueSongSheetClick() {
+  router.push({name:'IndexboutiqueSheet',params: {'activeCategory': activeCategory.value}})
+}
 </script>
 <style scoped lang="scss">
 .boutique-song-sheet {
@@ -158,28 +133,6 @@ const categorieClick = (name) => {
   margin: 15px 0;
   &-category {
     position: relative;
-    &__select {
-      padding: 5px 15px;
-      border: 1px solid #ddd;
-      font-size: $font15;
-      border-radius: 30px;
-      cursor: pointer;
-      &:hover {
-        background: #f2f2f2;
-      }
-    }
-    &__list {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-    }
-    .song-sheet-tag {
-      &__list {
-        width: calc(100% - 70px);
-        display: flex;
-        flex-wrap: wrap;
-      }
-    }
     &__hot-navbar {
       display: flex;
       justify-content: flex-start;
