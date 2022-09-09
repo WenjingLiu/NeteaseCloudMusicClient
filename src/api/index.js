@@ -34,13 +34,31 @@ export function getSongSheetHotCategoryApi() {
       method: 'get'
   })
 }
-
-
-// 精品歌单
-export function getSongSheetBoutiqueApi(data) {
+// 歌单
+export function getSongSheetListApi(data) {
   return request({
       url: `${host}/top/playlist`,
       method: 'get',
       params: data
   })
 }
+
+// 精品歌单标签列表
+export function getSongSheetBoutiqueTagApi(data) {
+  return request({
+      url: `${host}/playlist/highquality/tags`,
+      method: 'get',
+      params: data
+  })
+}
+
+// 精品歌单
+export function getSongSheetBoutiqueApi(data) {
+  return request({
+      url: `${host}/top/playlist/highquality`,
+      method: 'get',
+      params: data
+  })
+}
+
+
