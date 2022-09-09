@@ -1,6 +1,6 @@
 <template>
     <div class="song-sheet-tag-group">
-        <p class="song-sheet-tag-group__name">{{ label }}</p>
+        <p v-if="label" class="song-sheet-tag-group__name">{{ label }}</p>
         <slot></slot>
     </div>
 </template>

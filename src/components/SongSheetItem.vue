@@ -2,16 +2,20 @@
 import { reactive, computed } from "vue";
 import ImgText from "@/components/ImgText.vue";
 import { numberChangeWanApi } from'@/js/count.js'
-const props = defineProps({
-  item: Object,
+defineProps({
+  id: Number,
+  img: String,
+  name: String,
+  playCount: Number
+
 });
 </script>
 <template>
   <div class="song-sheet-item">
-    <img-text :img="item.picUrl" :text="item.name" :textRow="2"></img-text>
-    <span class="song-sheet-item__number">{{ numberChangeWanApi(item.playCount)}}万</span>
+    <img-text :img="img" :text="name" :textRow="2"></img-text>
+    <span class="song-sheet-item__number">{{ numberChangeWanApi(playCount)}}万</span>
     <p class="song-sheet-item__play-icon">></p>
-    <img v-if="item.isWyyIcon" class="song-sheet-item__wyi-icon" src="https://img1.baidu.com/it/u=1013272199,2429096515&fm=253&fmt=auto&app=138&f=PNG?w=176&h=175" alt="">
+    <!-- <img v-if="item.isWyyIcon" class="song-sheet-item__wyi-icon" src="https://img1.baidu.com/it/u=1013272199,2429096515&fm=253&fmt=auto&app=138&f=PNG?w=176&h=175" alt=""> -->
   </div>
 </template>
 <style scoped lang="scss">

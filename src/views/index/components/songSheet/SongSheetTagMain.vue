@@ -4,11 +4,11 @@
       class="song-sheet-category__select"
       @click="allCategoryShow = !allCategoryShow"
     >
-      {{ songsheettag }} >
+      {{ modelValue }} >
     </p>
-    <div class="song-sheet-category__list" v-if="allCategoryShow">
+    <div class="song-sheet-category__list" v-if="allCategoryShow" :class="{'song-sheet-category__list--left': direction == 'left','song-sheet-category__list--right': direction == 'right'}">
       <song-sheet-tag-category
-        v-model="songsheettag"
+        v-model="modelValue"
       >
         <song-sheet-tag-group
           v-for="group in list"
@@ -22,7 +22,7 @@
               :tag="item"
               :label="item.name"
               :class="
-                songsheettag == item.name ? 'song-sheet-tag--active' : ''
+                modelValue == item.name ? 'song-sheet-tag--active' : ''
               "
             ></song-sheet-tag>
           </div>
@@ -32,14 +32,30 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import SongSheetTagCategory from "./SongSheetTagCategory.vue";
 import SongSheetTagGroup from "./SongSheetTagGroup.vue";
 import SongSheetTag from "./SongSheetTag.vue";
 
 const allCategoryShow = ref(false);
-defineProps(["songsheettag", "list" ]);
-defineEmits(["update:songsheettag"]);
+const props = defineProps(["modelValue", "list", "direction" ]);
+const emits = defineEmits(["update:songsheettag"]);
+console.log(props.direction)
+watch(
+    () => props.modelValue,
+    (newValue, oldValue) => {
+        emits('update:modelValue', newValue)
+    },
+    {deep: true}
+)
+watch(
+    () => props.list,
+    (newValue, oldValue) => {
+        props.list = newValue
+        console.log(props.list)
+    },
+    {deep: true}
+)
 
 </script>
 <style scoped lang="scss">
@@ -57,8 +73,15 @@ defineEmits(["update:songsheettag"]);
     }
     &__list {
       position: absolute;
-      left: 0;
-      bottom: 0;
+      top: 40px;
+      z-index: 2;
+      background: #fff;
+      &--left {
+          left: 0
+      }
+      &--right {
+          right: 0
+      }
     }
     .song-sheet-tag {
       &__list {

@@ -2,11 +2,11 @@
   <div class="recommend">
     <swiper
       class="recommend-swiper"
-      :modules="modules "
+      :modules="modules"
       :loop="true"
       :autoplay="{
         delay: 2000,
-        stopOnLastSlide: true
+        stopOnLastSlide: true,
       }"
       effect="coverflow"
       :slides-per-view="2"
@@ -17,19 +17,30 @@
         stretch: 10,
         depth: 100,
         modifier: 2,
-        slideShadows: false
+        slideShadows: false,
       }"
       :navigation="{
         nextEl: '.next', //前进后退按钮
         prevEl: '.prev',
       }"
     >
-      <div class="next"> > </div>
-      <div class="prev"> prev </div>
-      <swiper-slide><img src="http://juzeng.oss-cn-shanghai.aliyuncs.com/shouban/prod/v1/imgs/2934e37321904b7d8b9452c6a5d72c5a.jpg?x-oss-process=image/format,jpg" alt=""></swiper-slide>
-      <swiper-slide><img src="http://juzeng.oss-cn-shanghai.aliyuncs.com/shouban/prod/v1/imgs/a5770e60abe8453b801536ff441d7179.jpg?x-oss-process=image/format,jpg" alt=""></swiper-slide>
-      <swiper-slide><img src="http://juzeng.oss-cn-shanghai.aliyuncs.com/shouban/prod/v1/imgs/710b42f330aa46d0b11cc10cf23280f5.jpg?x-oss-process=image/format,jpg" alt=""></swiper-slide>
-      
+      <div class="next">></div>
+      <div class="prev">prev</div>
+      <swiper-slide
+        ><img
+          src="http://juzeng.oss-cn-shanghai.aliyuncs.com/shouban/prod/v1/imgs/2934e37321904b7d8b9452c6a5d72c5a.jpg?x-oss-process=image/format,jpg"
+          alt=""
+      /></swiper-slide>
+      <swiper-slide
+        ><img
+          src="http://juzeng.oss-cn-shanghai.aliyuncs.com/shouban/prod/v1/imgs/a5770e60abe8453b801536ff441d7179.jpg?x-oss-process=image/format,jpg"
+          alt=""
+      /></swiper-slide>
+      <swiper-slide
+        ><img
+          src="http://juzeng.oss-cn-shanghai.aliyuncs.com/shouban/prod/v1/imgs/710b42f330aa46d0b11cc10cf23280f5.jpg?x-oss-process=image/format,jpg"
+          alt=""
+      /></swiper-slide>
     </swiper>
     <title-item
       class="recommend-title"
@@ -40,28 +51,30 @@
       <song-sheet-item
         v-for="item in songSheetList"
         :key="item.id"
-        :item="item"
+        :id="item.id"
+        :img="item.picUrl"
+        :name="item.name"
+        :playCount="item.playCount"
       ></song-sheet-item>
     </div>
   </div>
 </template>
 <script setup>
-import { getEveryDaySongSheetApi } from '@/api/index'
+import { getEveryDaySongSheetApi } from "@/api/index";
 import titleItem from "@/components/titleItem.vue";
 import SongSheetItem from "@/components/SongSheetItem.vue";
 import { ref } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Pagination, EffectCoverflow, Autoplay } from 'swiper'
-import 'swiper/scss';
-import 'swiper/scss/navigation';
+import { Navigation, Pagination, EffectCoverflow, Autoplay } from "swiper";
+import "swiper/scss";
+import "swiper/scss/navigation";
 // import "swiper/scss/hash-navigation"
 
-
-const modules = [Navigation, Pagination,  EffectCoverflow, Autoplay]
-const songSheetList = ref([])
-getEveryDaySongSheetApi(10).then(res => {
-    songSheetList.value = res.data.result
-})
+const modules = [Navigation, Pagination, EffectCoverflow, Autoplay];
+const songSheetList = ref([]);
+getEveryDaySongSheetApi(10).then((res) => {
+  songSheetList.value = res.data.result;
+});
 // console.log(songSheetList)
 </script>
 <style scoped lang="scss">
@@ -79,7 +92,8 @@ getEveryDaySongSheetApi(10).then(res => {
       height: 180px;
       // object-fit: contain;
     }
-    .next, .prev {
+    .next,
+    .prev {
       position: absolute;
       top: 50%;
       width: 34px;

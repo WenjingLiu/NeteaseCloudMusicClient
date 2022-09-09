@@ -28,9 +28,6 @@ provide('changeName', (value) => {
   width: 700px;
   border: 1px solid #eee;
   box-shadow: 0 0 3px #ddd;
-  position: absolute;
-  top: 10px;
-  left: 0;
   &-title {
     padding: 15px 0 15px 30px;
     border-bottom: 1px solid #eee;
